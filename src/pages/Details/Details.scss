@@ -1,0 +1,12 @@
+.details-container {
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: 1440px) {
+    max-height: 100vh;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 55% 20%;
+    gap: 7rem;
+  }
+}

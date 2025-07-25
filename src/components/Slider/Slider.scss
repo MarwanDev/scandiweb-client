@@ -1,0 +1,50 @@
+.slider-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  height: 70vh;
+}
+
+.images-container {
+  display: none;
+
+  @media screen and (min-width: 1440px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+    width: 30%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    gap: 2rem;
+    height: 100%;
+  }
+}
+
+.images-container::-webkit-scrollbar {
+  display: none !important;
+}
+
+.multi-image {
+  width: 135px;
+}
+
+.single-img {
+  position: relative;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  height: auto;
+}
+
+.img-arrows {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 25px;
+  padding: 0 1rem;
+}
