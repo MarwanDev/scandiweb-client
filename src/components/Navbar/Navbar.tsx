@@ -37,6 +37,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
       setOrderProducts(JSON.parse(storedProducts));
     }
     document.addEventListener("mousedown", handleClickOutside);
+    console.log(cartRef);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -165,8 +166,17 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
       </button>
 
       {cartToggle && (
-        <div className="cart-popup" ref={cartRef}>
-          <Cart orderProducts={orderProducts} />
+        <div
+          className="cart-popup"
+          ref={cartRef}
+          onClick={() => setCartToggle(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{ position: "relative", zIndex: 2 }}
+          >
+            <Cart orderProducts={orderProducts} />
+          </div>
         </div>
       )}
     </nav>

@@ -10,6 +10,21 @@ interface CartProps {
 
 const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
   const [orderProducts, setOrderProducts] = useState<OrderProduct[]>([]);
+  const [cartTotal, setCartTotal] = useState(0);
+
+  useEffect(() => {
+    const total = orderProducts.reduce(
+      (acc, product) =>
+        acc +
+        (Number(
+          product?.quantity && product?.total
+            ? product?.total * product?.quantity
+            : product?.total
+        ) || 0),
+      0
+    );
+    setCartTotal(total);
+  }, [orderProducts]);
 
   useEffect(() => {
     const initializedProducts = initialOrderProducts?.map((product) => ({
@@ -30,38 +45,6 @@ const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
       a.touchIdIndex === b.touchIdIndex
     );
   };
-
-  // const incrementQuantity = (productId: string) => {
-  //   setOrderProducts((prev) =>
-  //     prev.map((product) =>
-  //       product?.productDetails?.id === productId
-  //         ? {
-  //             ...product,
-  //             quantity: (product.quantity || 1) + 1,
-  //             total:
-  //               product?.productDetails?.prices[0]?.amount *
-  //               ((product.quantity || 1) + 1),
-  //           }
-  //         : product
-  //     )
-  //   );
-  // };
-
-  // const decrementQuantity = (productId: string) => {
-  //   setOrderProducts((prev) =>
-  //     prev.map((product) =>
-  //       product?.productDetails?.id === productId && (product.quantity || 1) > 1
-  //         ? {
-  //             ...product,
-  //             quantity: (product.quantity || 1) - 1,
-  //             total:
-  //               product?.productDetails?.prices[0]?.amount *
-  //               ((product.quantity || 1) - 1),
-  //           }
-  //         : product
-  //     )
-  //   );
-  // };
 
   const incrementQuantity = (targetProduct: OrderProduct) => {
     setOrderProducts((prev) => {
@@ -108,13 +91,6 @@ const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
     });
   };
 
-  const calculateTotal = (): number => {
-    return orderProducts.reduce(
-      (acc, product) => acc + (product.total || 0),
-      0
-    );
-  };
-
   const handlePlaceOrderClick = () => {
     axios({
       url: "http://localhost:8080/scandiweb-server/",
@@ -133,78 +109,12 @@ const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
       });
   };
 
-  const cartTotal = calculateTotal();
-
   let itemsText = "You have no items";
   if (orderProducts.length === 1) {
     itemsText = "1 item";
   } else if (orderProducts.length > 1) {
     itemsText = `${orderProducts.length} items`;
   }
-
-  // const renderAttribute = (
-  //   product: OrderProduct,
-  //   attributeName: string,
-  //   selectedIndex?: number
-  // ) => {
-  //   const filteredItems = product?.productDetails?.attributes.filter(
-  //     (item) => item.name === attributeName
-  //   );
-  //   if (
-  //     !product?.productDetails?.attributes?.some(
-  //       (attr) => attr.name == attributeName
-  //     )
-  //   )
-  //     return null;
-
-  //   return (
-  //     <div>
-  //       <h4 className="prod-info-header">{attributeName}:</h4>
-  //       <div className="item-sizes">
-  //         {filteredItems && (
-  //           <h5 className="capacity">
-  //             {filteredItems[0]?.items[selectedIndex || 0]?.value}
-  //           </h5>
-  //         )}
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
-  // const renderColor = (product: OrderProduct) => {
-  //   if (
-  //     !product?.productDetails?.attributes.some((attr) => attr.name === "Color")
-  //   )
-  //     return null;
-  //   const colorItems = product?.productDetails?.attributes.filter(
-  //     (item) => item.name === "Color"
-  //   )[0].items;
-  //   const selected = colorItems[product.colorIndex || 0];
-
-  //   return (
-  //     <div>
-  //       <h4 className="prod-info-header">Color:</h4>
-  //       <div className="item-colors">
-  //         <div
-  //           style={{ height: 24, width: 24, backgroundColor: selected?.value }}
-  //         ></div>
-  //         {/* {colorItems
-  //           .filter((_, i) => i !== (product.colorIndex || 0))
-  //           .map((item, index) => (
-  //             <div
-  //               key={index}
-  //               style={{
-  //                 height: 24,
-  //                 width: 24,
-  //                 backgroundColor: item.value,
-  //                 cursor: "pointer",
-  //               }}
-  //             ></div>
-  //           ))} */}
-  //       </div>
-  //     </div>
-  //   );
-  // };
 
   return (
     <div className="cart-container">
@@ -214,9 +124,9 @@ const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
       </h3>
 
       <div className="cart-items">
-        {orderProducts.map((product) => (
+        {orderProducts.map((product, index) => (
           <CartItem
-            key={product?.productDetails?.id}
+            key={index}
             product={product}
             incrementQuantity={incrementQuantity}
             decrementQuantity={decrementQuantity}
@@ -228,8 +138,9 @@ const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
         <div className="total-info">
           <h3>Total</h3>
           <h3 style={{ fontFamily: `"Roboto", sans-serif` }}>
-            ${Math.round(cartTotal * 100) / 100}
-            {/* 3.55 */}
+            {typeof cartTotal == "number"
+              ? `$${Math.round(cartTotal * 100) / 100}`
+              : "N/A"}
           </h3>
         </div>
 
