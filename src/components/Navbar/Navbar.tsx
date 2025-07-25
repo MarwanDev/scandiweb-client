@@ -37,7 +37,6 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
       setOrderProducts(JSON.parse(storedProducts));
     }
     document.addEventListener("mousedown", handleClickOutside);
-    console.log(cartRef);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
