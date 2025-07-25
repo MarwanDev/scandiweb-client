@@ -117,7 +117,7 @@ const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
   }
 
   return (
-    <div className="cart-container">
+    <div className="cart-container" onClick={(e) => e.stopPropagation()}>
       <h3 className="items-count">
         My Bag,{" "}
         <span style={{ fontFamily: `"Roboto", sans-serif` }}>{itemsText}</span>

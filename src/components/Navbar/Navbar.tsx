@@ -171,12 +171,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
           ref={cartRef}
           onClick={() => setCartToggle(false)}
         >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{ position: "relative", zIndex: 2 }}
-          >
-            <Cart orderProducts={orderProducts} />
-          </div>
+          <Cart orderProducts={orderProducts} />
         </div>
       )}
     </nav>
