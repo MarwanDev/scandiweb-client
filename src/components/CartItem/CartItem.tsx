@@ -12,10 +12,7 @@ const CartItem: React.FC<CartItemProps> = ({
   incrementQuantity,
   decrementQuantity,
 }) => {
-  const renderAttribute = (
-    attributeName: string,
-    selectedIndex?: number
-  ) => {
+  const renderAttribute = (attributeName: string, selectedIndex?: number) => {
     const filteredItems = product?.productDetails?.attributes.filter(
       (item) => item.name === attributeName
     );
@@ -27,14 +24,40 @@ const CartItem: React.FC<CartItemProps> = ({
       return null;
 
     return (
-      <div>
+      <div
+        data-testid={`cart-item-attribute-${attributeName.replace(
+          " ",
+          "-".toLowerCase()
+        )}`}
+      >
         <h4 className="prod-info-header">{attributeName}:</h4>
         <div className="item-sizes">
           {filteredItems && (
-            <h5 className="capacity">
+            <h5
+              className={
+                attributeName.toLowerCase() == "size" ? "size" : "capacity"
+              }
+              data-testid={`cart-item-attribute-${attributeName.replace(
+                " ",
+                "-".toLowerCase()
+              )}-${attributeName.replace(" ", "-".toLowerCase())}-selected`}
+            >
               {filteredItems[0]?.items[selectedIndex || 0]?.value}
             </h5>
           )}
+          {filteredItems &&
+            filteredItems[0]?.items
+              .filter((_, idx) => idx !== (selectedIndex || 0))
+              .map((item, idx) => (
+                <h5
+                  key={idx}
+                  className={
+                    attributeName.toLowerCase() == "size" ? "size" : "capacity"
+                  }
+                >
+                  {item.value}
+                </h5>
+              ))}
         </div>
       </div>
     );
@@ -42,15 +65,16 @@ const CartItem: React.FC<CartItemProps> = ({
 
   const renderColor = () => {
     if (
-      !product?.productDetails?.attributes.some(
-        (attr) => attr.name === "Color"
-      )
+      !product?.productDetails?.attributes.some((attr) => attr.name === "Color")
     )
       return null;
     const colorItems = product?.productDetails?.attributes.filter(
       (item) => item.name === "Color"
     )[0].items;
     const selected = colorItems[product.colorIndex || 0];
+    const otherColors = colorItems.filter(
+      (_, idx) => idx !== product.colorIndex
+    );
 
     return (
       <div>
@@ -59,6 +83,18 @@ const CartItem: React.FC<CartItemProps> = ({
           <div
             style={{ height: 24, width: 24, backgroundColor: selected?.value }}
           ></div>
+          {otherColors.map((color, index) => (
+            <div
+              key={index}
+              style={{
+                height: 24,
+                width: 24,
+                backgroundColor: color.value,
+                cursor: "pointer",
+                opacity: 0.6,
+              }}
+            ></div>
+          ))}
         </div>
       </div>
     );
@@ -71,6 +107,7 @@ const CartItem: React.FC<CartItemProps> = ({
         <h3
           className="item-price"
           style={{ fontFamily: `"Roboto", sans-serif` }}
+          data-testid='cart-item-amount'
         >
           {product?.productDetails?.prices[0]?.currency_symbol}
           {product?.productDetails?.prices[0]?.amount}
@@ -87,6 +124,7 @@ const CartItem: React.FC<CartItemProps> = ({
         <button
           className="option-button"
           onClick={() => incrementQuantity(product)}
+          data-testid="cart-item-amount-increase"
         >
           +
         </button>
@@ -94,6 +132,7 @@ const CartItem: React.FC<CartItemProps> = ({
         <button
           className="option-button"
           onClick={() => decrementQuantity(product)}
+          data-testid="cart-item-amount-decrease"
         >
           -
         </button>

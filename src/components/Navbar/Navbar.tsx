@@ -90,7 +90,12 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
                         ? "active nav-link"
                         : "nav-link";
                     }}
-                    data-testid="category-link"
+                    data-testid={({ isActive }: { isActive: boolean }) => {
+                      const isRoot = location.pathname === "/" && item.id == 1;
+                      return isActive || isRoot
+                        ? "active-category-link"
+                        : "category-link";
+                    }}
                     onClick={() => setToggle(false)}
                   >
                     {item.name}
@@ -111,7 +116,12 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
                 const isRoot = location.pathname === "/" && item.id == 1;
                 return isActive || isRoot ? "active nav-link" : "nav-link";
               }}
-              data-testid="category-link"
+              data-testid={({ isActive }: { isActive: boolean }) => {
+                const isRoot = location.pathname === "/" && item.id == 1;
+                return isActive || isRoot
+                  ? "active-category-link"
+                  : "category-link";
+              }}
               onClick={() => setToggle(false)}
             >
               {item.name}

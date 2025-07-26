@@ -120,7 +120,10 @@ const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
       <div className="cart-footer">
         <div className="total-info">
           <h3>Total</h3>
-          <h3 style={{ fontFamily: `"Roboto", sans-serif` }}>
+          <h3
+            style={{ fontFamily: `"Roboto", sans-serif` }}
+            data-testid="cart-total"
+          >
             {typeof cartTotal == "number"
               ? `$${Math.round(cartTotal * 100) / 100}`
               : "N/A"}

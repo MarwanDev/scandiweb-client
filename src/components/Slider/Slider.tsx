@@ -21,7 +21,7 @@ const Slider: React.FC<SliderProps> = ({ images }) => {
   };
 
   return (
-    <div className="slider-container">
+    <div className="slider-container" data-testid='product-gallery'>
       <div className="images-container">
         {images.map((image, index) => (
           <img

@@ -154,7 +154,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
         <h4 className="prod-name">{product?.name}</h4>
 
         {productSizeAttribute && (
-          <>
+          <div data-testid="product-attribute-size">
             <h4 className="prod-info-header">Size:</h4>
             <div className="item-sizes">
               {productSizeAttribute?.items.map((item, index) => (
@@ -169,11 +169,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                 </h5>
               ))}
             </div>
-          </>
+          </div>
         )}
 
         {productColorAttribute && (
-          <>
+          <div data-testid="product-attribute-color">
             <h4 className="prod-info-header">Color:</h4>
             <div className="item-colors">
               {productColorAttribute?.items.map((item, index) => (
@@ -192,11 +192,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                 ></div>
               ))}
             </div>
-          </>
+          </div>
         )}
 
         {productCapacityAttribute && (
-          <>
+          <div data-testid="product-attribute-capacity">
             <h4 className="prod-info-header">Capacity:</h4>
             <div className="item-sizes">
               {productCapacityAttribute?.items.map((item, index) => (
@@ -219,11 +219,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                 </h5>
               ))}
             </div>
-          </>
+          </div>
         )}
 
         {productUSB3Attribute && (
-          <>
+          <div data-testid="product-attribute-with-usb-3-ports">
             <h4 className="prod-info-header">With USB 3 ports:</h4>
             <div className="item-sizes">
               {productUSB3Attribute?.items.map((item, index) => (
@@ -240,11 +240,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                 </h5>
               ))}
             </div>
-          </>
+          </div>
         )}
 
         {productkeyboardTouchIdAttribute && (
-          <>
+          <div data-testid="product-attribute-touch-id-in-keyboard">
             <h4 className="prod-info-header">Touch ID in keyboard:</h4>
             <div className="item-sizes">
               {productkeyboardTouchIdAttribute?.items.map((item, index) => (
@@ -267,7 +267,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                 </h5>
               ))}
             </div>
-          </>
+          </div>
         )}
 
         <h4 className="prod-info-header">Price:</h4>
@@ -283,6 +283,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                 ? "disabled-place-order-btn-detail"
                 : "place-order-btn-detail"
             }
+            data-testid="add-to-cart"
             style={{ width: "100%" }}
             onClick={handleClickAddToCart}
           >
@@ -290,7 +291,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
           </button>
         )}
 
-        <div className="prod-info-desc">{productDescription}</div>
+        <div className="prod-info-desc" data-testid="product-description">
+          {productDescription}
+        </div>
       </div>
     </div>
   );
