@@ -3,6 +3,7 @@ import axios from "axios";
 import "./Cart.scss";
 import type { OrderProduct } from "../../graphql/types/product.types";
 import CartItem from "../CartItem/CartItem";
+import PlaceOrderButton from "../PlaceOrderButton/PlaceOrderButton";
 
 interface CartProps {
   orderProducts: OrderProduct[];
@@ -91,24 +92,6 @@ const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
     });
   };
 
-  const handlePlaceOrderClick = () => {
-    axios({
-      url: "http://localhost:8080/scandiweb-server/",
-      method: "post",
-      data: {
-        query: `mutation { addOrder { id } }`,
-      },
-    })
-      .then((res) => {
-        console.log(res.data);
-        localStorage.clear();
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.error("Error executing mutation:", err.message);
-      });
-  };
-
   let itemsText = "You have no items";
   if (orderProducts.length === 1) {
     itemsText = "1 item";
@@ -143,19 +126,7 @@ const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
               : "N/A"}
           </h3>
         </div>
-
-        <button
-          className="place-order-btn"
-          onClick={handlePlaceOrderClick}
-          disabled={orderProducts.length === 0}
-          style={
-            orderProducts.length === 0
-              ? { backgroundColor: "gray", cursor: "not-allowed" }
-              : {}
-          }
-        >
-          place order
-        </button>
+        <PlaceOrderButton orderProducts={orderProducts} />
       </div>
     </div>
   );

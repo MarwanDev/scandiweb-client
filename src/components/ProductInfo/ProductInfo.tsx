@@ -99,40 +99,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
     onCartUpdate?.();
   };
 
-  // const handleClickAddToCart = () => {
-  //   const existingProduct = orderProducts.find(
-  //     (item: any) =>
-  //       item.productDetails.id === product.id &&
-  //       item.colorIndex === colorIndex &&
-  //       item.sizeIndex === sizeIndex &&
-  //       item.capacityIndex === capacityIndex &&
-  //       item.usbIndex === usbIndex &&
-  //       item.touchIdIndex === touchIdIndex
-  //   );
-
-  //   if (!existingProduct) {
-  //     const updatedProduct: any = {};
-  //     updatedProduct.productDetails = { ...product };
-  //     updatedProduct.colorIndex = colorIndex;
-  //     updatedProduct.sizeIndex = sizeIndex;
-  //     updatedProduct.capacityIndex = capacityIndex;
-  //     updatedProduct.usbIndex = usbIndex;
-  //     updatedProduct.touchIdIndex = touchIdIndex;
-
-  //     const updatedOrderProducts = [...orderProducts, updatedProduct];
-  //     setOrderProducts(updatedOrderProducts);
-  //     localStorage.setItem(
-  //       "orderProducts",
-  //       JSON.stringify(updatedOrderProducts)
-  //     );
-  //     window.dispatchEvent(new Event("orderProductsUpdated"));
-
-  //     onCartUpdate?.();
-  //   } else {
-  //     console.warn("Product already exists in cart.");
-  //   }
-  // };
-
   const productDescription = parse(
     product?.description.replace(/\\n/g, "") || ""
   );
