@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 
-const endpoint = 'http://localhost:8090/scandiweb-server/public/index.php';
+const endpoint = import.meta.env.VITE_API_URL;
 
 const client = new GraphQLClient(endpoint, {
   headers: {
