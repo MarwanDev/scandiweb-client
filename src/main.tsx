@@ -10,7 +10,12 @@ async function bootstrap() {
   const root = createRoot(rootElement);
 
   try {
-    const categories: Category[] = await fetchAllCategories();
+    const fallbackCategories = [
+      { id: 1, name: "all" },
+      { id: 2, name: "clothes" },
+      { id: 3, name: "tech" },
+    ];
+    const categories: Category[] = (await fetchAllCategories().catch(() => fallbackCategories)) || fallbackCategories;
     if (categories && categories.length > 0) {
       root.render(
         <StrictMode>
