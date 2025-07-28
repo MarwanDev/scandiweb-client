@@ -21,25 +21,29 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
   const cartRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
 
-  const cartClickHandler = () => {
-    setCartToggle((prev) => !prev);
-  };
+  // const cartClickHandler = () => {
+  //   setCartToggle((prev) => !prev);
+  // };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
-      setCartToggle(false);
-    }
-  };
+  // const handleClickOutside = (event: MouseEvent) => {
+  //   if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
+  //     setCartToggle(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    const storedProducts = localStorage.getItem("orderProducts");
-    if (storedProducts) {
-      setOrderProducts(JSON.parse(storedProducts));
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+  // useEffect(() => {
+  //   const storedProducts = localStorage.getItem("orderProducts");
+  //   if (storedProducts) {
+  //     setOrderProducts(JSON.parse(storedProducts));
+  //   }
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
+
+    useEffect(() => {
+console.log(cartToggle)
   }, []);
 
   useEffect(() => {
@@ -137,7 +141,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
       <div className="app__navbar-menu" />
 
       <button
-        onClick={cartClickHandler}
+        onClick={() => cartToggle ? setCartToggle(false) : setCartToggle(true)}
         style={{
           backgroundColor: "rgba(0, 0, 0, 0)",
           border: "none",
