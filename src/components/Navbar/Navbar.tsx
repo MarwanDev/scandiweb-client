@@ -121,24 +121,18 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
 
           return (
             <li key={item.id}>
-              <NavLink to={path}>
-                {({ isActive }) => {
-                  const active = isActive || isRoot;
-                  return (
-                    <div>
-                      <NavLink
-                        to={path}
-                        style={{ textDecoration: "none" }}
-                        className={active ? "active nav-link" : "nav-link"}
-                        data-testid={
-                          active ? "active-category-link" : "category-link"
-                        }
-                      >
-                        {item.name}
-                      </NavLink>
-                    </div>
-                  );
-                }}
+              <NavLink
+                to={path}
+                className={({ isActive }) =>
+                  isActive || isRoot ? "active nav-link" : "nav-link"
+                }
+                data-testid={
+                  location.pathname === path || isRoot
+                    ? "active-category-link"
+                    : "category-link"
+                }
+              >
+                {item.name}
               </NavLink>
             </li>
           );
