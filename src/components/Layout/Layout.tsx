@@ -4,13 +4,22 @@ import Navbar from "../Navbar/Navbar";
 import { Home, Details } from "../../pages";
 import "./Layout.scss";
 import type { Category } from "../../graphql/types/category.types";
-import { fetchAllCategories } from "../../services/categoryService";
+// import { fetchAllCategories } from "../../services/categoryService";
 
 const Layout = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>([
+      { name: "all", id: 1 },
+      { name: "clothes", id: 2 },
+      { name: "tech", id: 3 },
+    ]);
 
   useEffect(() => {
-    fetchAllCategories().then(setCategories).catch(console.error);
+    // fetchAllCategories().then(setCategories).catch(console.error);
+    setCategories([
+      { name: "all", id: 1 },
+      { name: "clothes", id: 2 },
+      { name: "tech", id: 3 },
+    ]);
   }, []);
 
   return (
@@ -21,7 +30,10 @@ const Layout = () => {
           <div className="layout-container">
             <Routes>
               {categories?.map((item) => (
-                <Route path={`/${item.name}`} element={<Home category={item} />} />
+                <Route
+                  path={`/${item.name}`}
+                  element={<Home category={item} />}
+                />
               ))}
               <Route path="/" element={<Home category={categories[0]} />} />
               <Route path="/details/:id" element={<Details />} />
