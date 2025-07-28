@@ -75,10 +75,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onCartUpdate }) => {
   return (
     <Link
       className="card-container"
-      to={`/details/${product.id}`}
+      to={`/details/${product?.id}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      data-testid={`product-${product.name
+      data-testid={`product-${product?.name
         .toLowerCase()
         .replace(/\s+/g, "-")
         .replace(/[^a-z0-9-]/g, "")}`}
