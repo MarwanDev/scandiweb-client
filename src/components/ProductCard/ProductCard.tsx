@@ -25,6 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onCartUpdate }) => {
     const stored = localStorage.getItem("orderProducts");
     if (stored) {
       setOrderProducts(JSON.parse(stored));
+      console.log(orderProducts);
     }
     getRouteFromURL();
   }, [getRouteFromURL]);

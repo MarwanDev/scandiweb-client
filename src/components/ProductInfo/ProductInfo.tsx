@@ -59,6 +59,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
       (item: any) => item.id === product.id && product.attributes.length == 0
     );
     setIsProductInCart(!!isInCart);
+    console.log(isProductInCart);
   }, [orderProducts, product.id]);
 
   const handleClickAddToCart = () => {

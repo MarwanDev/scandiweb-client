@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./Cart.scss";
 import type { OrderProduct } from "../../graphql/types/product.types";
 import CartItem from "../CartItem/CartItem";
