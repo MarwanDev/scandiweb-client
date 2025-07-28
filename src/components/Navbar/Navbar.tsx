@@ -111,7 +111,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
         {categories?.map((item) => (
           <li key={item.id}>
             <NavLink
-              to={`/${item.id}`}
+              to={`/${item.name}`}
               className={({ isActive }) => {
                 const isRoot = location.pathname === "/" && item.id == 1;
                 return isActive || isRoot ? "active nav-link" : "nav-link";
