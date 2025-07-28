@@ -29,17 +29,14 @@ const Details: React.FC = () => {
   }, []);
 
   return (
-    <div className="details-container">
+    <div className="details-container" data-testid={`product-${product?.id}`}>
       {product && (
         <>
           <Slider images={images} />
           <ProductInfo
             product={product}
             onCartUpdate={handleCartUpdate}
-            //  onCartUpdate={handleCartUpdate}
           />
-          {/* <Slider images={images} />
-          <ProductInfo product={product} onCartUpdate={handleCartUpdate} /> */}
         </>
       )}
     </div>
