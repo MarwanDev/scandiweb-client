@@ -11,11 +11,13 @@ async function bootstrap() {
 
   try {
     const categories: Category[] = await fetchAllCategories();
-    root.render(
-      <StrictMode>
-        <App initialCategories={categories} />
-      </StrictMode>
-    );
+    if (categories && categories.length > 0) {
+      root.render(
+        <StrictMode>
+          <App initialCategories={categories} />
+        </StrictMode>
+      );
+    }
   } catch (error) {
     console.error("Error fetching categories:", error);
     root.render(
