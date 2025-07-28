@@ -14,16 +14,30 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = ({ category }) => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    if (category && category?.name == "all")
-      fetchAllProducts().then(setProducts).catch(console.error);
-    else {
+    setLoading(true);
+    if (category && category?.name == "all") {
+      fetchAllProducts()
+        .then((data) => setProducts(data))
+        .catch(console.error)
+        .finally(() => setLoading(false));
+    } else {
       fetchProductsByCategory(category?.id)
-        .then(setProducts)
-        .catch(console.error);
+        .then((data) => setProducts(data))
+        .catch(console.error)
+        .finally(() => setLoading(false));
     }
   }, [category]);
+
+  if (loading) {
+    return <p data-testid="loading">Loading products...</p>;
+  }
+
+  if (!products || products.length === 0) {
+    return <p data-testid="no-products">No products found</p>;
+  }
 
   return (
     <div className="home-container">
@@ -31,10 +45,7 @@ const Home: React.FC<HomeProps> = ({ category }) => {
       <div className="results">
         {products && products.length > 0 ? (
           products?.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-            />
+            <ProductCard key={product.id} product={product} />
           ))
         ) : (
           <p>Loading...</p>
