@@ -1,36 +1,33 @@
 import { Route, Routes } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import { Home, Details } from "../../pages";
 import "./Layout.scss";
 import type { Category } from "../../graphql/types/category.types";
-// import { fetchAllCategories } from "../../services/categoryService";
+import { fetchAllCategories } from "../../services/categoryService";
 
 const Layout = ({ initialCategories }: { initialCategories: Category[] }) => {
-  // const categories = initialCategories;
   useEffect(() => {
-    // fetchAllCategories().then(setCategories).catch(console.error);
-    // setCategories([
-    //   { name: "all", id: 1 },
-    //   { name: "clothes", id: 2 },
-    //   { name: "tech", id: 3 },
-    // ]);
+    if (!initialCategories) {
+      fetchAllCategories().then(setCategories).catch(console.error);
+    }
   }, []);
+  const [categories, setCategories] = useState(initialCategories);
 
   return (
     <>
-      {initialCategories ? (
+      {categories ? (
         <div>
-          <Navbar categories={initialCategories} />
+          <Navbar categories={categories} />
           <div className="layout-container">
             <Routes>
-              {initialCategories?.map((item) => (
+              {categories?.map((item) => (
                 <Route
                   path={`/${item.name}`}
                   element={<Home category={item} />}
                 />
               ))}
-              <Route path="/" element={<Home category={initialCategories[0]} />} />
+              <Route path="/" element={<Home category={categories[0]} />} />
               <Route path="/details/:id" element={<Details />} />
             </Routes>
           </div>
