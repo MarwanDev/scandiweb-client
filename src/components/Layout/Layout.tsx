@@ -7,7 +7,7 @@ import type { Category } from "../../graphql/types/category.types";
 // import { fetchAllCategories } from "../../services/categoryService";
 
 const Layout = ({ initialCategories }: { initialCategories: Category[] }) => {
-  const categories = initialCategories;
+  // const categories = initialCategories;
   useEffect(() => {
     // fetchAllCategories().then(setCategories).catch(console.error);
     // setCategories([
@@ -19,18 +19,18 @@ const Layout = ({ initialCategories }: { initialCategories: Category[] }) => {
 
   return (
     <>
-      {categories ? (
+      {initialCategories ? (
         <div>
-          <Navbar categories={categories} />
+          <Navbar categories={initialCategories} />
           <div className="layout-container">
             <Routes>
-              {categories?.map((item) => (
+              {initialCategories?.map((item) => (
                 <Route
                   path={`/${item.name}`}
                   element={<Home category={item} />}
                 />
               ))}
-              <Route path="/" element={<Home category={categories[0]} />} />
+              <Route path="/" element={<Home category={initialCategories[0]} />} />
               <Route path="/details/:id" element={<Details />} />
             </Routes>
           </div>
