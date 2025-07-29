@@ -27,7 +27,7 @@ const Layout = ({ initialCategories }: { initialCategories: Category[] }) => {
                   element={<Home category={item} />}
                 />
               ))}
-              <Route path="/" element={<Home category={initialCategories[0]} />} />
+              {/* <Route path="/" element={<Home category={categories[0]} />} /> */}
               <Route path="/details/:id" element={<Details />} />
             </Routes>
           </div>
