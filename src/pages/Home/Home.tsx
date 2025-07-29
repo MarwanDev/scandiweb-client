@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./Home.scss";
 import { ProductCard } from "../../components";
 import type { Product } from "../../graphql/types/product.types";
-// import {
-//   fetchAllProducts,
-//   fetchProductsByCategory,
-// } from "../../services/productService";
+import {
+  fetchAllProducts,
+  fetchProductsByCategory,
+} from "../../services/productService";
 import type { Category } from "../../graphql/types/category.types";
 
 interface HomeProps {
