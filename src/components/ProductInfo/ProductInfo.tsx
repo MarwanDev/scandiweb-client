@@ -279,18 +279,16 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
 
         <button
           className={
-            !areOptionsSelected
+            !areOptionsSelected || !product?.in_stock
               ? "disabled-place-order-btn-detail"
               : "place-order-btn-detail"
           }
           data-testid="add-to-cart"
           style={{
             width: "100%",
-            backgroundColor: product?.in_stock ? "rgb(94, 206, 123)" : "gray",
-            cursor: product?.in_stock ? "pointer" : "not-allowed",
           }}
           onClick={handleClickAddToCart}
-          disabled={!product?.in_stock}
+          disabled={!areOptionsSelected || !product?.in_stock}
         >
           add to cart
         </button>
