@@ -78,7 +78,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onCartUpdate }) => {
       to={`/details/${product?.id}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      data-testid={`product-${product.name.replace(/\s+/g, "-").toLowerCase()}`}
+      data-testid={`product-${product?.name
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "")}`}
     >
       <img
         src={product.gallery[0].image_url}
