@@ -42,8 +42,8 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
   //   };
   // }, []);
 
-  useEffect(() => {
-    console.log(cartToggle);
+    useEffect(() => {
+console.log(cartToggle)
   }, []);
 
   useEffect(() => {
@@ -112,30 +112,26 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
       </div> */}
 
       <ul className="app__navbar-links">
-        {categories ? (
-          categories?.map((item) => (
-            <li key={item.id}>
-              <NavLink
-                to={`/${item.name.toLowerCase().replace(/\s+/g, "-").trim()}`}
-                className={({ isActive }) => {
-                  const isRoot = location.pathname === "/" && item.id == 1;
-                  return isActive || isRoot ? "active nav-link" : "nav-link";
-                }}
-                data-testid={({ isActive }: { isActive: boolean }) => {
-                  const isRoot = location.pathname === "/" && item.id == 1;
-                  return isActive || isRoot
-                    ? "active-category-link"
-                    : "category-link";
-                }}
-                // onClick={() => setToggle(false)}
-              >
-                {item.name}
-              </NavLink>
-            </li>
-          ))
-        ) : (
-          <p>Loading...</p>
-        )}
+        {categories?.map((item) => (
+          <li key={item.id}>
+            <NavLink
+              to={`/${item.name}`}
+              className={({ isActive }) => {
+                const isRoot = location.pathname === "/" && item.id == 1;
+                return isActive || isRoot ? "active nav-link" : "nav-link";
+              }}
+              data-testid={({ isActive }: { isActive: boolean }) => {
+                const isRoot = location.pathname === "/" && item.id == 1;
+                return isActive || isRoot
+                  ? "active-category-link"
+                  : "category-link";
+              }}
+              // onClick={() => setToggle(false)}
+            >
+              {item.name}
+            </NavLink>
+          </li>
+        ))}
       </ul>
 
       <NavLink to="/">
@@ -145,9 +141,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
       <div className="app__navbar-menu" />
 
       <button
-        onClick={() =>
-          cartToggle ? setCartToggle(false) : setCartToggle(true)
-        }
+        onClick={() => cartToggle ? setCartToggle(false) : setCartToggle(true)}
         style={{
           backgroundColor: "rgba(0, 0, 0, 0)",
           border: "none",
