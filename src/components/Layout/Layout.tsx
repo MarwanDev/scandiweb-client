@@ -1,13 +1,17 @@
 import { Route, Routes } from "react-router-dom";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import { Home, Details } from "../../pages";
 import "./Layout.scss";
 import type { Category } from "../../graphql/types/category.types";
 // import { fetchAllCategories } from "../../services/categoryService";
 
-const Layout = ({ initialCategories }: { initialCategories: Category[] }) => {
-  const categories = initialCategories;
+const Layout = () => {
+  const [categories] = useState<Category[]>([
+      { name: "all", id: 1 },
+      { name: "clothes", id: 2 },
+      { name: "tech", id: 3 },
+    ]);
   useEffect(() => {
     // fetchAllCategories().then(setCategories).catch(console.error);
     // setCategories([
