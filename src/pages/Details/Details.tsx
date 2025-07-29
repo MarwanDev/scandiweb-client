@@ -29,22 +29,17 @@ const Details: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <div className="details-container" data-testid={`product-${product?.id}`}>
       {product && (
-        <div
-          className="details-container"
-          data-testid={`product-${product?.name
-            .toLowerCase()
-            .replace(/\s+/g, "-")
-            .replace(/[^a-z0-9-]/g, "")}`}
-        >
-          <>
-            <Slider images={images} />
-            <ProductInfo product={product} onCartUpdate={handleCartUpdate} />
-          </>
-        </div>
+        <>
+          <Slider images={images} />
+          <ProductInfo
+            product={product}
+            onCartUpdate={handleCartUpdate}
+          />
+        </>
       )}
-    </>
+    </div>
   );
 };
 
