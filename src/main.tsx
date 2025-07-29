@@ -14,7 +14,7 @@ async function bootstrap() {
     if (categories && categories.length > 0) {
       root.render(
         <StrictMode>
-          <App initialCategories={categories ?? []} />
+          <App initialCategories={categories} />
         </StrictMode>
       );
     }
