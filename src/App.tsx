@@ -1,13 +1,12 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import { Layout } from "./components";
 import "./App.css";
-import type { Category } from "./graphql/types/category.types";
 
-function App({ initialCategories }: { initialCategories: Category[] }) {
+function App() {
   return (
     <Router>
       <main>
-        <Layout initialCategories={initialCategories}/>
+        <Layout />
       </main>
     </Router>
   );
