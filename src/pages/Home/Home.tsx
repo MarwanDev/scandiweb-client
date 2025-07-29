@@ -10,32 +10,34 @@ import type { Category } from "../../graphql/types/category.types";
 
 interface HomeProps {
   category: Category;
-  categoryProducts: Product[];
 }
 
-const Home: React.FC<HomeProps> = ({ category, categoryProducts }) => {
-  const [products, setProducts] = useState<Product[]>(categoryProducts);
-  // const [loading, setLoading] = useState<boolean>(true);
+const Home: React.FC<HomeProps> = ({ category }) => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // setLoading(true);
-    setProducts(categoryProducts);
+    setLoading(true);
     if (category && category?.name == "all") {
-      setProducts(categoryProducts);
+      fetchAllProducts()
+        .then((data) => setProducts(data))
+        .catch(console.error)
+        .finally(() => setLoading(false));
     } else {
-      setProducts(
-        categoryProducts.filter((item) => item.category == category?.name)
-      );
+      fetchProductsByCategory(category?.id)
+        .then((data) => setProducts(data))
+        .catch(console.error)
+        .finally(() => setLoading(false));
     }
   }, [category]);
 
-  // if (loading) {
-  //   return <p data-testid="loading">Loading products...</p>;
-  // }
+  if (loading) {
+    return <p data-testid="loading">Loading products...</p>;
+  }
 
-  // if (!products || products.length === 0) {
-  //   return <p data-testid="no-products">No products found</p>;
-  // }
+  if (!products || products.length === 0) {
+    return <p data-testid="no-products">No products found</p>;
+  }
 
   return (
     <div className="home-container">

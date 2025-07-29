@@ -15,9 +15,7 @@ async function bootstrap() {
       { id: 2, name: "clothes" },
       { id: 3, name: "tech" },
     ];
-    const categories: Category[] =
-      (await fetchAllCategories().catch(() => fallbackCategories)) ||
-      fallbackCategories;
+    const categories: Category[] = (await fetchAllCategories().catch(() => fallbackCategories)) || fallbackCategories;
     if (categories && categories.length > 0) {
       root.render(
         <StrictMode>
