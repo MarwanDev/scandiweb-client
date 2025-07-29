@@ -3,9 +3,9 @@ import "./Navbar.scss";
 import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import cart from "../../assets/cart.svg";
-// import { GiHamburgerMenu } from "react-icons/gi";
-// import { HiX } from "react-icons/hi";
-// import { motion } from "framer-motion";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { HiX } from "react-icons/hi";
+import { motion } from "framer-motion";
 import Cart from "../Cart/Cart";
 import type { Category } from "../../graphql/types/category.types";
 import type { OrderProduct } from "../../graphql/types/product.types";
@@ -15,7 +15,7 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ categories }) => {
-  // const [toggle, setToggle] = useState<boolean>(false);
+  const [toggle, setToggle] = useState<boolean>(false);
   const [cartToggle, setCartToggle] = useState<boolean>(false);
   const [orderProducts, setOrderProducts] = useState<OrderProduct[]>([]);
   const cartRef = useRef<HTMLDivElement | null>(null);
@@ -67,12 +67,12 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
 
   return (
     <nav className="app__navbar">
-      {/* <GiHamburgerMenu
+      <GiHamburgerMenu
         style={{ fontSize: 25 }}
         onClick={() => setToggle(!toggle)}
         className="menu-burger"
-      /> */}
-      {/* <div className="app__navbar-menu">
+      />
+      <div className="app__navbar-menu">
         {toggle && (
           <motion.div
             whileInView={{ x: [-300, 0] }}
@@ -83,7 +83,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
               {categories?.map((item) => (
                 <li key={item.id}>
                   <NavLink
-                    to={`/${item.name}`}
+                    to={`/${item.id}`}
                     className={({ isActive }) => {
                       const isRoot = location.pathname === "/" && item.id == 1;
                       return isActive || isRoot
@@ -105,7 +105,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
             </ul>
           </motion.div>
         )}
-      </div> */}
+      </div>
 
       <ul className="app__navbar-links">
         {categories?.map((item) => (
@@ -122,7 +122,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
                   ? "active-category-link"
                   : "category-link";
               }}
-              // onClick={() => setToggle(false)}
+              onClick={() => setToggle(false)}
             >
               {item.name}
             </NavLink>
