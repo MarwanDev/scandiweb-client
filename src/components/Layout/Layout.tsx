@@ -6,12 +6,8 @@ import "./Layout.scss";
 import type { Category } from "../../graphql/types/category.types";
 // import { fetchAllCategories } from "../../services/categoryService";
 
-const Layout = () => {
-  const [categories] = useState<Category[]>([
-      { name: "all", id: 1 },
-      { name: "clothes", id: 2 },
-      { name: "tech", id: 3 },
-    ]);
+const Layout = ({ initialCategories }: { initialCategories: Category[] }) => {
+  const [categories] = useState<Category[]>(initialCategories);
   useEffect(() => {
     // fetchAllCategories().then(setCategories).catch(console.error);
     // setCategories([
