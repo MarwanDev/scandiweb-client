@@ -7,7 +7,7 @@ function App({ initialCategories }: { initialCategories: Category[] }) {
   return (
     <Router>
       <main>
-        <Layout initialCategories={initialCategories} />
+        <Layout initialCategories={initialCategories}/>
       </main>
     </Router>
   );
