@@ -2,18 +2,24 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import { fetchAllCategories } from "./services/categoryService";
-import type { Category } from "./graphql/types/category.types";
+// import { fetchAllCategories } from "./services/categoryService";
+// import type { Category } from "./graphql/types/category.types";
 
 async function bootstrap() {
   const rootElement = document.getElementById("root")!;
   const root = createRoot(rootElement);
 
   try {
-    const categories: Category[] = await fetchAllCategories();
+    // const categories: Category[] = await fetchAllCategories();
     root.render(
       <StrictMode>
-        <App initialCategories={categories} />
+        <App
+          initialCategories={[
+            { id: 1, name: "all" },
+            { id: 2, name: "clothes" },
+            { id: 3, name: "tech" },
+          ]}
+        />
       </StrictMode>
     );
   } catch (error) {
