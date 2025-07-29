@@ -112,38 +112,30 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
       </div> */}
 
       <ul className="app__navbar-links">
-        {categories?.map((item) => {
-          const path = `/${item.name
-            .toLowerCase()
-            .replace(/\s+/g, "-")
-            .trim()}`;
-          const isRoot = location.pathname === "/" && item.id == 1;
-
-          return (
+        {categories ? (
+          categories?.map((item) => (
             <li key={item.id}>
               <NavLink
-                to={path}
+                to={`/${item.name.toLowerCase().replace(/\s+/g, "-").trim()}`}
                 className={({ isActive }) => {
-                  const active = isActive || isRoot;
-                  return active ? "active nav-link" : "nav-link";
+                  const isRoot = location.pathname === "/" && item.id == 1;
+                  return isActive || isRoot ? "active nav-link" : "nav-link";
                 }}
+                data-testid={({ isActive }: { isActive: boolean }) => {
+                  const isRoot = location.pathname === "/" && item.id == 1;
+                  return isActive || isRoot
+                    ? "active-category-link"
+                    : "category-link";
+                }}
+                // onClick={() => setToggle(false)}
               >
-                {({ isActive }) => {
-                  const active = isActive || isRoot;
-                  return (
-                    <span
-                      data-testid={
-                        active ? "active-category-link" : "category-link"
-                      }
-                    >
-                      {item.name}
-                    </span>
-                  );
-                }}
+                {item.name}
               </NavLink>
             </li>
-          );
-        })}
+          ))
+        ) : (
+          <p>Loading...</p>
+        )}
       </ul>
 
       <NavLink to="/">
