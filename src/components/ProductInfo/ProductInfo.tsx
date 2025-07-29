@@ -277,23 +277,20 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
           {product?.prices[0].amount}
         </h3>
 
-        <button
-          className={
-            !areOptionsSelected
-              ? "disabled-place-order-btn-detail"
-              : "place-order-btn-detail"
-          }
-          data-testid="add-to-cart"
-          style={{
-            width: "100%",
-            backgroundColor: product?.in_stock ? "rgb(94, 206, 123)" : "gray",
-            cursor: product?.in_stock ? "pointer" : "not-allowed",
-          }}
-          onClick={handleClickAddToCart}
-          disabled={!product?.in_stock}
-        >
-          add to cart
-        </button>
+        {product?.in_stock && (
+          <button
+            className={
+              !areOptionsSelected
+                ? "disabled-place-order-btn-detail"
+                : "place-order-btn-detail"
+            }
+            data-testid="add-to-cart"
+            style={{ width: "100%" }}
+            onClick={handleClickAddToCart}
+          >
+            add to cart
+          </button>
+        )}
 
         <div className="prod-info-desc" data-testid="product-description">
           {productDescription}
