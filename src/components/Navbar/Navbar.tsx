@@ -183,12 +183,14 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
       </button>
 
       {cartToggle && (
-        <div
-          className="cart-popup"
-          ref={cartRef}
-          onClick={() => setCartToggle(false)}
-        >
-          <Cart orderProducts={orderProducts} />
+        <div className="cart-backdrop" onClick={() => setCartToggle(false)}>
+          <div
+            className="cart-popup"
+            ref={cartRef}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Cart orderProducts={orderProducts} />
+          </div>
         </div>
       )}
     </nav>
