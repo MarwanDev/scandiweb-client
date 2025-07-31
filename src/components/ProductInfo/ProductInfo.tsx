@@ -162,6 +162,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                 <h5
                   className={sizeIndex == index ? "size size-active" : "size"}
                   key={index}
+                  data-testid={`product-attribute-size-${item.value}`}
                   onClick={() =>
                     handleAttributeChange("sizeIndex", index, setSizeIndex)
                   }
@@ -187,6 +188,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                     cursor: "pointer",
                   }}
                   className={colorIndex == index ? "active-color" : "color"}
+                  data-testid={`product-attribute-color-${item.value}`}
                   onClick={() =>
                     handleAttributeChange("colorIndex", index, setColorIndex)
                   }
@@ -207,6 +209,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                       ? "capacity capacity-active"
                       : "capacity"
                   }
+                  data-testid={`product-attribute-capacity-${item.value}`}
                   key={index}
                   onClick={() =>
                     handleAttributeChange(
@@ -233,6 +236,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                     usbIndex == index ? "capacity capacity-active" : "capacity"
                   }
                   key={index}
+                  data-testid={`product-attribute-with-usb-3-ports-${item.value}`}
                   onClick={() =>
                     handleAttributeChange("usbIndex", index, setUsbIndex)
                   }
@@ -256,6 +260,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                       : "capacity"
                   }
                   key={index}
+                  data-testid={`product-attribute-touch-id-in-keyboard-${item.value}`}
                   onClick={() =>
                     handleAttributeChange(
                       "touchIdIndex",
