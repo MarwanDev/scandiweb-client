@@ -174,7 +174,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
       </button>
 
       {cartToggle && (
-        <div className="cart-popup">
+        <div className="cart-popup" data-testid="cart-overlay">
           <Cart orderProducts={orderProducts} />
         </div>
       )}
