@@ -29,7 +29,12 @@ const Details: React.FC = () => {
   }, []);
 
   return (
-    <div className="details-container">
+    <div
+      className="details-container"
+      data-testid={`product-${product?.name
+        .replace(/\s+/g, "-")
+        .toLowerCase()}`}
+    >
       {product && (
         <>
           <Slider images={images} />
