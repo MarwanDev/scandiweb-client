@@ -31,7 +31,6 @@ const PlaceOrderButton: React.FC<PlaceOrderButtonProps> = ({
 
   return (
     <button
-      data-testid="cart-btn"
       className="place-order-btn"
       onClick={handlePlaceOrder}
       disabled={orderProducts.length == 0}
