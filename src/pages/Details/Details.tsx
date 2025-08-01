@@ -41,10 +41,7 @@ const Details: React.FC = () => {
           <ProductInfo
             product={product}
             onCartUpdate={handleCartUpdate}
-            //  onCartUpdate={handleCartUpdate}
           />
-          {/* <Slider images={images} />
-          <ProductInfo product={product} onCartUpdate={handleCartUpdate} /> */}
         </>
       )}
     </div>

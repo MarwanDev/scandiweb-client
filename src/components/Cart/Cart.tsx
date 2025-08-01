@@ -99,7 +99,7 @@ const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
   }
 
   return (
-    <div className="cart-container" data-testid="cart-overlay" onClick={(e) => e.stopPropagation()}>
+    <div className="cart-container" data-testid="cart-overlay">
       <h3 className="items-count">
         My Bag,{" "}
         <span style={{ fontFamily: `"Roboto", sans-serif` }}>{itemsText}</span>

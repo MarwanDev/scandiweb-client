@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import "./Navbar.scss";
 import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.svg";
@@ -18,17 +18,10 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
   const [toggle, setToggle] = useState<boolean>(false);
   const [cartToggle, setCartToggle] = useState<boolean>(false);
   const [orderProducts, setOrderProducts] = useState<OrderProduct[]>([]);
-  const cartRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
 
   const cartClickHandler = () => {
-    setCartToggle((prev) => !prev);
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
-      setCartToggle(false);
-    }
+    setCartToggle(!cartToggle);
   };
 
   useEffect(() => {
@@ -36,10 +29,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
     if (storedProducts) {
       setOrderProducts(JSON.parse(storedProducts));
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => {};
   }, []);
 
   useEffect(() => {
@@ -50,6 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
       } else {
         setOrderProducts([]);
       }
+      setCartToggle(true);
     };
 
     // Listen to both custom and native storage events
@@ -58,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
 
     // Initial load
     syncOrderProducts();
-
+    setCartToggle(false);
     return () => {
       window.removeEventListener("storage", syncOrderProducts);
       window.removeEventListener("orderProductsUpdated", syncOrderProducts);
@@ -183,14 +174,8 @@ const Navbar: React.FC<NavbarProps> = ({ categories }) => {
       </button>
 
       {cartToggle && (
-        <div className="cart-backdrop" onClick={() => setCartToggle(false)}>
-          <div
-            className="cart-popup"
-            ref={cartRef}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Cart orderProducts={orderProducts} />
-          </div>
+        <div className="cart-popup">
+          <Cart orderProducts={orderProducts} />
         </div>
       )}
     </nav>
