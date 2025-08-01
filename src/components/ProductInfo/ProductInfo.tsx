@@ -292,6 +292,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
             data-testid="add-to-cart"
             style={{ width: "100%" }}
             onClick={handleClickAddToCart}
+            disabled={!areOptionsSelected}
           >
             add to cart
           </button>
