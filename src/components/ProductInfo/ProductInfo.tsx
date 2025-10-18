@@ -22,12 +22,16 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
     product.attributes.some((item) => item.name == "Size")
       ? product.attributes.find((item) => item.name == "Size")
       : null;
+  const productTextTypeAttributes =
+    product?.attributes?.filter((attr) => attr?.type === "text") ?? [];
   const productColorAttribute =
     product &&
     product.attributes &&
     product.attributes.some((item) => item.name == "Color")
       ? product.attributes.find((item) => item.name == "Color")
       : null;
+  const productSwatchTypeAttributes =
+    product?.attributes?.filter((attr) => attr?.type === "swatch") ?? [];
   const productCapacityAttribute =
     product &&
     product.attributes &&
@@ -154,7 +158,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
       <div className="item-info">
         <h4 className="prod-name">{product?.name}</h4>
 
-        {productSizeAttribute && (
+        {/* {productSizeAttribute && (
           <div data-testid="product-attribute-size">
             <h4 className="prod-info-header">Size:</h4>
             <div className="item-sizes">
@@ -172,13 +176,16 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
               ))}
             </div>
           </div>
-        )}
+        )} */}
 
-        {productColorAttribute && (
-          <div data-testid="product-attribute-color">
-            <h4 className="prod-info-header">Color:</h4>
+        {productSwatchTypeAttributes.map((attr) => (
+          <div
+            key={attr.name}
+            data-testid={`product-attribute-${attr.name.toLowerCase()}`}
+          >
+            <h4 className="prod-info-header">{attr.name}:</h4>
             <div className="item-colors">
-              {productColorAttribute?.items.map((item, index) => (
+              {attr.items.map((item, index) => (
                 <div
                   key={index}
                   style={{
@@ -187,30 +194,37 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                     backgroundColor: item.value,
                     cursor: "pointer",
                   }}
-                  className={colorIndex == index ? "active-color" : "color"}
-                  data-testid={`product-attribute-color-${item.value}`}
+                  className={colorIndex === index ? "active-color" : "color"}
+                  data-testid={`product-attribute-${attr.name.toLowerCase()}-${
+                    item.value
+                  }`}
                   onClick={() =>
                     handleAttributeChange("colorIndex", index, setColorIndex)
                   }
-                ></div>
+                />
               ))}
             </div>
           </div>
-        )}
+        ))}
 
-        {productCapacityAttribute && (
-          <div data-testid="product-attribute-capacity">
-            <h4 className="prod-info-header">Capacity:</h4>
+        {/* {productTextTypeAttributes.map((attr) => (
+          <div
+            key={attr.name}
+            data-testid={`product-attribute-${attr.name.toLowerCase()}`}
+          >
+            <h4 className="prod-info-header">{attr.name}:</h4>
             <div className="item-sizes">
-              {productCapacityAttribute?.items.map((item, index) => (
+              {attr.items.map((item, index) => (
                 <h5
+                  key={index}
                   className={
-                    capacityIndex == index
+                    capacityIndex === index
                       ? "capacity capacity-active"
                       : "capacity"
                   }
-                  data-testid={`product-attribute-capacity-${item.value}`}
-                  key={index}
+                  data-testid={`product-attribute-${attr.name.toLowerCase()}-${
+                    item.value
+                  }`}
                   onClick={() =>
                     handleAttributeChange(
                       "capacityIndex",
@@ -224,9 +238,49 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
               ))}
             </div>
           </div>
-        )}
+        ))} */}
 
-        {productUSB3Attribute && (
+        {productTextTypeAttributes.map((attr) => {
+          // Check the maximum value length inside this attribute
+          const maxLength = Math.max(...attr.items.map((i) => i.value.length));
+          const baseClass = maxLength >= 3 ? "capacity" : "size";
+
+          return (
+            <div
+              key={attr.name}
+              data-testid={`product-attribute-${attr.name.toLowerCase()}`}
+            >
+              <h4 className="prod-info-header">{attr.name}:</h4>
+
+              <div className="item-sizes">
+                {attr.items.map((item, index) => (
+                  <h5
+                    key={index}
+                    className={
+                      capacityIndex === index
+                        ? `${baseClass} ${baseClass}-active`
+                        : baseClass
+                    }
+                    data-testid={`product-attribute-${attr.name.toLowerCase()}-${
+                      item.value
+                    }`}
+                    onClick={() =>
+                      handleAttributeChange(
+                        "capacityIndex",
+                        index,
+                        setCapacityIndex
+                      )
+                    }
+                  >
+                    {item.value}
+                  </h5>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* {productUSB3Attribute && (
           <div data-testid="product-attribute-with-usb-3-ports">
             <h4 className="prod-info-header">With USB 3 ports:</h4>
             <div className="item-sizes">
@@ -246,9 +300,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
               ))}
             </div>
           </div>
-        )}
+        )} */}
 
-        {productkeyboardTouchIdAttribute && (
+        {/* {productkeyboardTouchIdAttribute && (
           <div data-testid="product-attribute-touch-id-in-keyboard">
             <h4 className="prod-info-header">Touch ID in keyboard:</h4>
             <div className="item-sizes">
@@ -274,7 +328,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
               ))}
             </div>
           </div>
-        )}
+        )} */}
 
         <h4 className="prod-info-header">Price:</h4>
         <h3 className="prod-price">
