@@ -36,14 +36,14 @@ const Cart: React.FC<CartProps> = ({ orderProducts: initialOrderProducts }) => {
   }, [initialOrderProducts]);
 
   const areProductsEqual = (a: OrderProduct, b: OrderProduct): boolean => {
-    return (
-      a.productDetails?.id === b.productDetails?.id &&
-      a.colorIndex === b.colorIndex &&
-      a.sizeIndex === b.sizeIndex &&
-      a.capacityIndex === b.capacityIndex &&
-      a.usbIndex === b.usbIndex &&
-      a.touchIdIndex === b.touchIdIndex
-    );
+    if (a.productDetails?.id !== b.productDetails?.id) return false;
+
+    const aKeys = Object.keys(a.attributes).sort();
+    const bKeys = Object.keys(b.attributes).sort();
+
+    if (aKeys.length !== bKeys.length) return false;
+
+    return aKeys.every((key) => a.attributes[key] === b.attributes[key]);
   };
 
   const incrementQuantity = (targetProduct: OrderProduct) => {

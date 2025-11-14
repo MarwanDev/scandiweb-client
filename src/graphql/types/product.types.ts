@@ -35,11 +35,7 @@ export interface AttributeItem {
 
 export interface OrderProduct {
   productDetails?: Product;
-  colorIndex?: number;
-  sizeIndex?: number;
-  capacityIndex?: number;
-  usbIndex?: number;
-  touchIdIndex?: number;
+  attributes: Record<string, number>;
   total?: number;
-  quantity?: number;
+  quantity: number;
 }

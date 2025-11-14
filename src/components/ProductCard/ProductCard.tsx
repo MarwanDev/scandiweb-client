@@ -33,36 +33,36 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onCartUpdate }) => {
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
 
+  const normalizeKey = (name: string) =>
+    name.replace(/\s+/g, "-").toLowerCase();
+
   const handleClickQuickShop = () => {
     const stored = localStorage.getItem("orderProducts");
-    let updatedOrderProducts: OrderProduct[] = [];
-    if (stored) {
-      updatedOrderProducts = JSON.parse(stored);
-    }
+    let updatedOrderProducts: OrderProduct[] = stored ? JSON.parse(stored) : [];
+
+    const defaultAttributes: Record<string, number> = {};
+
+    product.attributes?.forEach((attr) => {
+      const key = normalizeKey(attr.name);
+      defaultAttributes[key] = 0;
+    });
 
     const existingIndex = updatedOrderProducts.findIndex(
-      (item: OrderProduct) =>
-        item.productDetails?.id == product.id &&
-        item.colorIndex == 0 &&
-        item.sizeIndex == 0 &&
-        item.capacityIndex == 0 &&
-        item.usbIndex == 0 &&
-        item.touchIdIndex == 0
+      (item) =>
+        item.productDetails?.id === product.id &&
+        Object.entries(defaultAttributes).every(
+          ([key, value]) => item.attributes?.[key] === value
+        )
     );
+
     if (existingIndex !== -1) {
-      updatedOrderProducts[existingIndex].quantity =
-        (updatedOrderProducts[existingIndex].quantity || 1) + 1;
+      updatedOrderProducts[existingIndex].quantity += 1;
     } else {
-      const updatedProduct: OrderProduct = {
+      updatedOrderProducts.push({
         productDetails: { ...product },
-        colorIndex: 0,
-        sizeIndex: 0,
-        capacityIndex: 0,
-        usbIndex: 0,
-        touchIdIndex: 0,
+        attributes: defaultAttributes,
         quantity: 1,
-      };
-      updatedOrderProducts.push(updatedProduct);
+      });
     }
 
     setOrderProducts(updatedOrderProducts);
@@ -93,8 +93,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onCartUpdate }) => {
             src={cart}
             alt="quick-shop"
             className="quick-shop"
-            loading="lazy"
-            onClick={handleClickQuickShop}
+            onClick={(e) => {
+              e.preventDefault();
+              handleClickQuickShop();
+            }}
           />
         </Link>
       )}

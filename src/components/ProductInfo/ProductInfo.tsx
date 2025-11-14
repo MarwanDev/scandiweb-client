@@ -10,46 +10,14 @@ interface ProductInfoProps {
 
 const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
   const [orderProducts, setOrderProducts] = useState<OrderProduct[]>([]);
-  const [colorIndex, setColorIndex] = useState<number>(-1);
-  const [sizeIndex, setSizeIndex] = useState<number>(-1);
-  const [capacityIndex, setCapacityIndex] = useState<number>(-1);
-  const [usbIndex, setUsbIndex] = useState<number>(-1);
-  const [touchIdIndex, setTouchIdIndex] = useState<number>(-1);
+  const [selectedAttributes, setSelectedAttributes] = useState<
+    Record<string, number>
+  >({});
   const [isProductInCart, setIsProductInCart] = useState<boolean>(false);
-  const productSizeAttribute =
-    product &&
-    product.attributes &&
-    product.attributes.some((item) => item.name == "Size")
-      ? product.attributes.find((item) => item.name == "Size")
-      : null;
   const productTextTypeAttributes =
     product?.attributes?.filter((attr) => attr?.type === "text") ?? [];
-  const productColorAttribute =
-    product &&
-    product.attributes &&
-    product.attributes.some((item) => item.name == "Color")
-      ? product.attributes.find((item) => item.name == "Color")
-      : null;
   const productSwatchTypeAttributes =
     product?.attributes?.filter((attr) => attr?.type === "swatch") ?? [];
-  const productCapacityAttribute =
-    product &&
-    product.attributes &&
-    product.attributes.some((item) => item.name == "Capacity")
-      ? product.attributes.find((item) => item.name == "Capacity")
-      : null;
-  const productUSB3Attribute =
-    product &&
-    product.attributes &&
-    product.attributes.some((item) => item.name == "With USB 3 ports")
-      ? product.attributes.find((item) => item.name == "With USB 3 ports")
-      : null;
-  const productkeyboardTouchIdAttribute =
-    product &&
-    product.attributes &&
-    product.attributes.some((item) => item.name == "Touch ID in keyboard")
-      ? product.attributes.find((item) => item.name == "Touch ID in keyboard")
-      : null;
 
   useEffect(() => {
     const storedProducts = localStorage.getItem("orderProducts");
@@ -66,41 +34,32 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
     console.log(isProductInCart);
   }, [orderProducts, product.id]);
 
+  const normalizeKey = (name: string) => name.toLowerCase().replace(/ /g, "-");
+
   const handleClickAddToCart = () => {
     const updatedOrderProducts = [...orderProducts];
 
     const existingIndex = updatedOrderProducts.findIndex(
-      (item: OrderProduct) =>
-        item.productDetails?.id === product.id &&
-        item.colorIndex === colorIndex &&
-        item.sizeIndex === sizeIndex &&
-        item.capacityIndex === capacityIndex &&
-        item.usbIndex === usbIndex &&
-        item.touchIdIndex === touchIdIndex
+      (item) =>
+        item?.productDetails?.id === product.id &&
+        Object.entries(selectedAttributes).every(
+          ([key, value]) => item.attributes[key] === value
+        )
     );
 
     if (existingIndex !== -1) {
-      // Product already exists with same attributes → increment quantity
-      updatedOrderProducts[existingIndex].quantity =
-        (updatedOrderProducts[existingIndex].quantity || 1) + 1;
+      updatedOrderProducts[existingIndex].quantity++;
     } else {
-      // Product doesn't exist → add new with quantity = 1
-      const updatedProduct: any = {
+      updatedOrderProducts.push({
         productDetails: { ...product },
-        colorIndex,
-        sizeIndex,
-        capacityIndex,
-        usbIndex,
-        touchIdIndex,
+        attributes: { ...selectedAttributes },
         quantity: 1,
-      };
-      updatedOrderProducts.push(updatedProduct);
+      });
     }
 
     setOrderProducts(updatedOrderProducts);
     localStorage.setItem("orderProducts", JSON.stringify(updatedOrderProducts));
     window.dispatchEvent(new Event("orderProductsUpdated"));
-
     onCartUpdate?.();
   };
 
@@ -108,148 +67,73 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
     product?.description.replace(/\\n/g, "") || ""
   );
 
-  type AttributeName =
-    | "colorIndex"
-    | "sizeIndex"
-    | "capacityIndex"
-    | "usbIndex"
-    | "touchIdIndex";
+  const handleAttributeChange = (attributeName: string, index: number) => {
+    const key = normalizeKey(attributeName);
 
-  const handleAttributeChange = (
-    attribute: AttributeName,
-    index: number,
-    setter: (value: number) => void
-  ) => {
-    setter(index);
+    const newSelected = {
+      ...selectedAttributes,
+      [key]: index,
+    };
 
-    const match = orderProducts?.some((item: any) => {
-      return (
-        item.id === product.id &&
-        (attribute === "colorIndex"
-          ? item.colorIndex === index
-          : item.colorIndex === colorIndex) &&
-        (attribute === "sizeIndex"
-          ? item.sizeIndex === index
-          : item.sizeIndex === sizeIndex) &&
-        (attribute === "capacityIndex"
-          ? item.capacityIndex === index
-          : item.capacityIndex === capacityIndex) &&
-        (attribute === "usbIndex"
-          ? item.usbIndex === index
-          : item.usbIndex === usbIndex) &&
-        (attribute === "touchIdIndex"
-          ? item.touchIdIndex === index
-          : item.touchIdIndex === touchIdIndex)
-      );
-    });
+    setSelectedAttributes(newSelected);
+    console.log(selectedAttributes);
+
+    const match = orderProducts.some(
+      (item) =>
+        item.productDetails?.id === product.id &&
+        Object.entries(newSelected).every(
+          ([k, v]) => item.attributes?.[k] === v
+        )
+    );
 
     setIsProductInCart(match);
   };
 
-  const areOptionsSelected =
-    (productColorAttribute ? colorIndex > -1 : colorIndex == -1) &&
-    (productCapacityAttribute ? capacityIndex > -1 : capacityIndex == -1) &&
-    (productSizeAttribute ? sizeIndex > -1 : sizeIndex == -1) &&
-    (productUSB3Attribute ? usbIndex > -1 : usbIndex == -1) &&
-    (productkeyboardTouchIdAttribute ? touchIdIndex > -1 : touchIdIndex == -1);
+  const areOptionsSelected = product?.attributes?.every((attr) =>
+    selectedAttributes.hasOwnProperty(normalizeKey(attr.name))
+  );
 
   return (
     <div className="prod-info-container">
       <div className="item-info">
         <h4 className="prod-name">{product?.name}</h4>
 
-        {/* {productSizeAttribute && (
-          <div data-testid="product-attribute-size">
-            <h4 className="prod-info-header">Size:</h4>
-            <div className="item-sizes">
-              {productSizeAttribute?.items.map((item, index) => (
-                <h5
-                  className={sizeIndex == index ? "size size-active" : "size"}
-                  key={index}
-                  data-testid={`product-attribute-size-${item.value}`}
-                  onClick={() =>
-                    handleAttributeChange("sizeIndex", index, setSizeIndex)
-                  }
-                >
-                  {item.value}
-                </h5>
-              ))}
-            </div>
-          </div>
-        )} */}
+        {productSwatchTypeAttributes.map((attr) => {
+          const key = normalizeKey(attr.name);
 
-        {productSwatchTypeAttributes.map((attr) => (
-          <div
-            key={attr.name}
-            data-testid={`product-attribute-${attr.name.toLowerCase()}`}
-          >
-            <h4 className="prod-info-header">{attr.name}:</h4>
-            <div className="item-colors">
-              {attr.items.map((item, index) => (
-                <div
-                  key={index}
-                  style={{
-                    height: 24,
-                    width: 24,
-                    backgroundColor: item.value,
-                    cursor: "pointer",
-                  }}
-                  className={colorIndex === index ? "active-color" : "color"}
-                  data-testid={`product-attribute-${attr.name.toLowerCase()}-${
-                    item.value
-                  }`}
-                  onClick={() =>
-                    handleAttributeChange("colorIndex", index, setColorIndex)
-                  }
-                />
-              ))}
+          return (
+            <div key={attr.name} data-testid={`product-attribute-${key}`}>
+              <h4 className="prod-info-header">{attr.name}:</h4>
+              <div className="item-colors">
+                {attr.items.map((item, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      height: 24,
+                      width: 24,
+                      backgroundColor: item.value,
+                    }}
+                    className={
+                      selectedAttributes[key] === index
+                        ? "active-color"
+                        : "color"
+                    }
+                    data-testid={`product-attribute-${key}-${item.value}`}
+                    onClick={() => handleAttributeChange(attr.name, index)}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-
-        {/* {productTextTypeAttributes.map((attr) => (
-          <div
-            key={attr.name}
-            data-testid={`product-attribute-${attr.name.toLowerCase()}`}
-          >
-            <h4 className="prod-info-header">{attr.name}:</h4>
-            <div className="item-sizes">
-              {attr.items.map((item, index) => (
-                <h5
-                  key={index}
-                  className={
-                    capacityIndex === index
-                      ? "capacity capacity-active"
-                      : "capacity"
-                  }
-                  data-testid={`product-attribute-${attr.name.toLowerCase()}-${
-                    item.value
-                  }`}
-                  onClick={() =>
-                    handleAttributeChange(
-                      "capacityIndex",
-                      index,
-                      setCapacityIndex
-                    )
-                  }
-                >
-                  {item.value}
-                </h5>
-              ))}
-            </div>
-          </div>
-        ))} */}
+          );
+        })}
 
         {productTextTypeAttributes.map((attr) => {
-          // Check the maximum value length inside this attribute
+          const key = normalizeKey(attr.name);
           const maxLength = Math.max(...attr.items.map((i) => i.value.length));
           const baseClass = maxLength >= 3 ? "capacity" : "size";
 
           return (
-            <div
-              key={attr.name}
-              data-testid={`product-attribute-${attr.name.toLowerCase()}`}
-            >
+            <div key={attr.name} data-testid={`product-attribute-${key}`}>
               <h4 className="prod-info-header">{attr.name}:</h4>
 
               <div className="item-sizes">
@@ -257,20 +141,12 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                   <h5
                     key={index}
                     className={
-                      capacityIndex === index
+                      selectedAttributes[key] === index
                         ? `${baseClass} ${baseClass}-active`
                         : baseClass
                     }
-                    data-testid={`product-attribute-${attr.name.toLowerCase()}-${
-                      item.value
-                    }`}
-                    onClick={() =>
-                      handleAttributeChange(
-                        "capacityIndex",
-                        index,
-                        setCapacityIndex
-                      )
-                    }
+                    data-testid={`product-attribute-${key}-${item.value}`}
+                    onClick={() => handleAttributeChange(attr.name, index)}
                   >
                     {item.value}
                   </h5>
@@ -279,56 +155,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
             </div>
           );
         })}
-
-        {/* {productUSB3Attribute && (
-          <div data-testid="product-attribute-with-usb-3-ports">
-            <h4 className="prod-info-header">With USB 3 ports:</h4>
-            <div className="item-sizes">
-              {productUSB3Attribute?.items.map((item, index) => (
-                <h5
-                  className={
-                    usbIndex == index ? "capacity capacity-active" : "capacity"
-                  }
-                  key={index}
-                  data-testid={`product-attribute-with-usb-3-ports-${item.value}`}
-                  onClick={() =>
-                    handleAttributeChange("usbIndex", index, setUsbIndex)
-                  }
-                >
-                  {item.value}
-                </h5>
-              ))}
-            </div>
-          </div>
-        )} */}
-
-        {/* {productkeyboardTouchIdAttribute && (
-          <div data-testid="product-attribute-touch-id-in-keyboard">
-            <h4 className="prod-info-header">Touch ID in keyboard:</h4>
-            <div className="item-sizes">
-              {productkeyboardTouchIdAttribute?.items.map((item, index) => (
-                <h5
-                  className={
-                    touchIdIndex == index
-                      ? "capacity capacity-active"
-                      : "capacity"
-                  }
-                  key={index}
-                  data-testid={`product-attribute-touch-id-in-keyboard-${item.value}`}
-                  onClick={() =>
-                    handleAttributeChange(
-                      "touchIdIndex",
-                      index,
-                      setTouchIdIndex
-                    )
-                  }
-                >
-                  {item.value}
-                </h5>
-              ))}
-            </div>
-          </div>
-        )} */}
 
         <h4 className="prod-info-header">Price:</h4>
         <h3 className="prod-price">
