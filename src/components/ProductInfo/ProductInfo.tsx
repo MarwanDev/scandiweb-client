@@ -28,7 +28,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
 
   useEffect(() => {
     const isInCart = orderProducts?.some(
-      (item: any) => item.id === product.id && product.attributes.length == 0
+      (item: OrderProduct) =>
+        item.id === product.id && product.attributes.length == 0
     );
     setIsProductInCart(!!isInCart);
     console.log(isProductInCart);
@@ -90,7 +91,10 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
   };
 
   const areOptionsSelected = product?.attributes?.every((attr) =>
-    selectedAttributes.hasOwnProperty(normalizeKey(attr.name))
+    Object.prototype.hasOwnProperty.call(
+      selectedAttributes,
+      normalizeKey(attr.name)
+    )
   );
 
   return (

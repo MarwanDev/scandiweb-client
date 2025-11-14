@@ -35,6 +35,7 @@ export interface AttributeItem {
 
 export interface OrderProduct {
   productDetails?: Product;
+  id?: string;
   attributes: Record<string, number>;
   total?: number;
   quantity: number;

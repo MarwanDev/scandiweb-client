@@ -38,7 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onCartUpdate }) => {
 
   const handleClickQuickShop = () => {
     const stored = localStorage.getItem("orderProducts");
-    let updatedOrderProducts: OrderProduct[] = stored ? JSON.parse(stored) : [];
+    const updatedOrderProducts: OrderProduct[] = stored ? JSON.parse(stored) : [];
 
     const defaultAttributes: Record<string, number> = {};
 

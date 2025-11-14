@@ -26,7 +26,7 @@ const Details: React.FC = () => {
     if (id && id.length > 0) {
       fetchProduct(id).then(setProduct).catch(console.error);
     }
-  }, []);
+  }, [id]);
 
   return (
     <div

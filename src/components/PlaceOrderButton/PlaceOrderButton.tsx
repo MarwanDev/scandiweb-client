@@ -1,7 +1,10 @@
 import React from "react";
 import { createOrder } from "../../services/orderServices";
 import type { OrderProduct } from "../../graphql/types/product.types";
-import type { OrderItem } from "../../graphql/types/order.types";
+import type {
+  CreateOrderResponse,
+  OrderItem,
+} from "../../graphql/types/order.types";
 
 interface PlaceOrderButtonProps {
   orderProducts: OrderProduct[];
@@ -19,8 +22,9 @@ const PlaceOrderButton: React.FC<PlaceOrderButtonProps> = ({
     }));
 
     try {
-      const response: any = await createOrder(items);
+      const response = (await createOrder(items)) as CreateOrderResponse;
       console.log("Order created:", response.createOrder);
+
       localStorage.clear();
       window.dispatchEvent(new Event("orderProductsUpdated"));
       onCartUpdate?.();
