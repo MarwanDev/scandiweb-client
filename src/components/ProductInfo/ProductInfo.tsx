@@ -138,7 +138,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
             <div key={attr.name} data-testid={`product-attribute-${key}`}>
               <h4 className="prod-info-header">{attr.name}:</h4>
 
-              <div className="item-sizes">
+              <div className="item-attributes">
                 {attr.items.map((item, index) => (
                   <h5
                     key={index}
