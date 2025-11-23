@@ -133,8 +133,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
 
         {productTextTypeAttributes.map((attr) => {
           const key = normalizeKey(attr.name);
-          const maxLength = Math.max(...attr.items.map((i) => i.value.length));
-          const baseClass = maxLength >= 3 ? "capacity" : "size";
+          const baseClass = "size";
 
           return (
             <div key={attr.name} data-testid={`product-attribute-${key}`}>
