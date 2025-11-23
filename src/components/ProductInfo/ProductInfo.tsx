@@ -133,7 +133,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
 
         {productTextTypeAttributes.map((attr) => {
           const key = normalizeKey(attr.name);
-          const baseClass = "size";
 
           return (
             <div key={attr.name} data-testid={`product-attribute-${key}`}>
@@ -145,8 +144,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product, onCartUpdate }) => {
                     key={index}
                     className={
                       selectedAttributes[key] === index
-                        ? `${baseClass} ${baseClass}-active`
-                        : baseClass
+                        ? `attr attr-active`
+                        : "attr"
                     }
                     data-testid={`product-attribute-${key}-${item.value}`}
                     onClick={() => handleAttributeChange(attr.name, index)}

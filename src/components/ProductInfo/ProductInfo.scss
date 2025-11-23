@@ -50,7 +50,7 @@
   flex-wrap: nowrap;
 }
 
-.size {
+.attr {
   padding: 7px 10px;
   color: #1d1f22;
   text-align: center;
@@ -80,8 +80,7 @@
   cursor: pointer;
 }
 
-.size-active,
-.capacity-active {
+.attr-active {
   background-color: #1d1f22;
   color: #fff;
 }
